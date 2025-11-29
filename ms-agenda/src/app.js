@@ -17,3 +17,19 @@ app.listen(config.port, () => { // <-- Usar config.port
     console.log(`MS_Agenda escuchando en el puerto ${config.port}`);
     messageProducer.connect(); // <-- INICIAR CONEXIÓN A RABBITMQ
 });
+
+// --- INICIO CÓDIGO PROMETHEUS ---
+const promBundle = require("express-prom-bundle");
+// Configura el middleware para capturar métricas HTTP automáticas
+const metricsMiddleware = promBundle({
+  includeMethod: true, 
+  includePath: true, 
+  includeStatusCode: true, 
+  includeUp: true,
+  promClient: {
+    collectDefaultMetrics: {
+    }
+  }
+});
+app.use(metricsMiddleware);
+// --- FIN CÓDIGO PROMETHEUS ---

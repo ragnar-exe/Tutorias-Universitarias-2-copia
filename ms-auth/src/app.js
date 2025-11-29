@@ -18,3 +18,19 @@ app.use(errorHandler);
 app.listen(config.port, () => {
     console.log(`MS_Auth escuchando en el puerto ${config.port}`);
 });
+
+// --- INICIO CÓDIGO PROMETHEUS ---
+const promBundle = require("express-prom-bundle");
+// Configura el middleware para capturar métricas HTTP automáticas
+const metricsMiddleware = promBundle({
+  includeMethod: true, 
+  includePath: true, 
+  includeStatusCode: true, 
+  includeUp: true,
+  promClient: {
+    collectDefaultMetrics: {
+    }
+  }
+});
+app.use(metricsMiddleware);
+// --- FIN CÓDIGO PROMETHEUS ---

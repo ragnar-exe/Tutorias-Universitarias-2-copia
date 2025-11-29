@@ -79,3 +79,19 @@ app.listen(config.port, () => {
     startConsumer();
     messageProducer.connect(); // <-- INICIAR CONEXIÓN DEL PRODUCTOR
 });
+
+// --- INICIO CÓDIGO PROMETHEUS ---
+const promBundle = require("express-prom-bundle");
+// Configura el middleware para capturar métricas HTTP automáticas
+const metricsMiddleware = promBundle({
+  includeMethod: true, 
+  includePath: true, 
+  includeStatusCode: true, 
+  includeUp: true,
+  promClient: {
+    collectDefaultMetrics: {
+    }
+  }
+});
+app.use(metricsMiddleware);
+// --- FIN CÓDIGO PROMETHEUS ---
